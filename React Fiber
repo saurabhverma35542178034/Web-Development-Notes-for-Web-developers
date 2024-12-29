@@ -1,0 +1,92 @@
+### **React Fiber kya hai?**
+
+React Fiber, React ka ek **re-implementation** hai jo React ke rendering mechanism ko **optimize** karta hai. React Fiber, React 16 se introduce hua tha aur iska main purpose tha React ke rendering process ko **asynchronous** banane aur **performance** ko improve karna.
+
+Pehle React mein jo rendering process tha, wo synchronous (ek ke baad ek) hota tha. Iska matlab tha ki agar aapko complex UI ya kisi bade update ke liye state change karna hota, toh React ko poore component tree ko re-render karna padta tha, jo ki **performance issues** create karta tha.
+
+React Fiber ka goal tha is process ko zyada **efficient** aur **smooth** banana.
+
+### **React Fiber Ki Jarurat Kyon Thi?**
+
+#### 1. **Synchronous Rendering:**
+
+React ka pehla version synchronous rendering ka use karta tha. Matlab jab aap state ko update karte the ya kisi UI mein change karte the, toh React uske response mein poora component tree ko **ek hi bar** re-render kar leta tha.
+
+- **Problem**: Agar aapke paas bahut bada UI ho ya complex updates ho, toh React ke liye poora UI re-render karna ek bahut bada task ban jata tha. Isse **UI freeze ho jata tha** (user interaction ke dauran app slow ho jata tha) aur app ke performance mein noticeable **lag** aata tha.
+
+#### 2. **Lack of Interruptibility:**
+
+Pehle React mein rendering process **interrupt** nahi ho sakta tha. Matlab agar ek render operation start hota, toh wo poora hone tak continue karta, even agar user input ya scroll jaise events occur ho rahe ho.
+
+- **Problem**: Agar app ka rendering task bohot time le raha ho, toh user ko interface mein koi interaction nahi mil pata tha. Isse **bad user experience** hota tha, jaise long-running tasks ke dauran app responsive nahi rehta tha.
+
+---
+
+### **React Fiber Ne Kya Badla?**
+
+React Fiber ne React ke rendering process ko asynchronous bana diya. Iska matlab hai ki ab React **rendering tasks ko break karke** small chunks mein process kar sakta hai, taaki UI interactive rahe aur user experience improve ho.
+
+#### **React Fiber Ki Features:**
+
+1. **Asynchronous Rendering**:
+   - React Fiber asynchronous rendering allow karta hai, matlab rendering tasks ko **chunks mein** divide kiya ja sakta hai aur React in chunks ko background mein process kar sakta hai.
+   - Jab bhi koi high priority update (like user input or animations) ho, React Fiber uss task ko priority deta hai aur rendering ko **pause** kar sakta hai jab tak wo task complete nahi hota.
+
+   **Example**: Agar ek complex render chal raha ho, toh React Fiber user ke input (like typing, clicking) ko priority de sakta hai aur rendering ko **pause** karke us input ka response de sakta hai.
+
+2. **Prioritization of Updates**:
+   - React Fiber updates ko prioritize karne ka mechanism bhi introduce karta hai. Matlab kuch updates ko zyada important maana jaata hai (jaise user input, animation, etc.) aur React unhe pehle process karta hai.
+   - Agar kisi update ko turant process karna zaroori ho (for example, scrolling ke dauran UI ko update karna), toh React Fiber us update ko **higher priority** dega aur baki updates ko **lower priority** de sakta hai.
+
+3. **Concurrency (Multiple Tasks)**:
+   - React Fiber mein concurrency ka concept add kiya gaya hai. Iska matlab hai ki React ek time par ek se zyada tasks ko process kar sakta hai without blocking any one task. Matlab React ab **multiple tasks** ko ek saath efficiently handle kar sakta hai.
+   - Ye feature app ko **smooth** banaata hai, jisme **complex animations** ya **long-running tasks** smoothly handle ho sakte hain bina user interaction ko block kiye.
+
+4. **Incremental Rendering**:
+   - Fiber mein rendering ko chhote chhote parts mein divide kar diya gaya hai. Agar ek task bahut lamba hai, toh React wo task ko **chhote steps** mein divide kar leta hai, taaki UI par effect na ho.
+   - Is process ko **incremental rendering** kehte hain. Matlab React render ko small pieces mein break karke step by step execute karta hai, jis se app crash hone se bachti hai.
+
+---
+
+### **Fiber Ka Working Kaise Hoti Hai?**
+
+React Fiber ek **linked list** ki tarah kaam karta hai. Jab React ko rendering karni hoti hai, toh ye ek linked list banata hai jisme har node ek component ko represent karta hai. Har node ke paas apna **priority**, **state**, aur **update information** hota hai. Ye nodes **fiber tree** ka part hote hain.
+
+- **Fiber tree**: Ye tree ek hierarchy banata hai jisme har component ko ek fiber node ke roop mein represent kiya jaata hai.
+- Jab React ko rendering karna hota hai, toh ye tree ko traverse karta hai aur har node ko asynchronously render karta hai.
+- Agar kisi node ko zyada priority deni hoti hai, toh React usko pehle process karega aur baaki tasks ko baad mein.
+
+---
+
+### **React Fiber Ki Jarurat Kyu Thi?**
+
+1. **Improved Performance**:
+   - **React Fiber** ke aane se **app performance** significantly improve hui hai. Pehle ke synchronous rendering se, React ab asynchronous rendering ka use karta hai jo UI ko smooth banata hai.
+   - Fiber, React ko **high-priority tasks** ko quickly process karne ka moka deta hai jaise user input ya animations.
+
+2. **Better User Experience**:
+   - React Fiber se rendering process **interruptible** ho gaya hai. Iska matlab hai ki user input (jaise typing, scrolling) ko React **interrupt** kar sakta hai aur uss input ke response mein UI update kar sakta hai bina kisi lag ke.
+
+3. **Complex UIs Handling**:
+   - React Fiber complex UIs ko efficiently handle kar sakta hai. Agar aapke app mein bohot saare components hain ya animations chal rahi hain, toh Fiber inhe smoothly render karne mein help karta hai bina performance ke issues ke.
+
+4. **Concurrency and Prioritization**:
+   - React Fiber **concurrent rendering** ko allow karta hai, jisme React ek time pe multiple updates ko efficiently process kar sakta hai. Isse large-scale apps jisme heavy operations hain, wo bhi smoothly chalti hain.
+
+---
+
+### **Example to Understand Fiber Better:**
+
+Maan lijiye aap ek large list render kar rahe ho jisme 1000 items hain. Pehle React, agar synchronous render karta, toh **sabhi items ko ek hi time mein render** karta aur app ko block kar deta. Isse UI freeze ho sakta tha.
+
+**React Fiber** ke saath, ye list ko **chunks mein divide** kar diya jaata hai, taaki React ek time pe thoda hi render kare aur user ko **interactive UI** mile. Agar user kuch click karta hai ya scroll karta hai, toh React uss event ko **higher priority** de sakta hai aur list rendering ko pause kar sakta hai.
+
+---
+
+### **Summary:**
+
+React Fiber, React ke rendering process ko optimize karta hai aur usse **asynchronous**, **interruptible**, aur **performant** banata hai. Ye **UI rendering ko smooth** banata hai, **user interaction** ko priority deta hai, aur **complex UIs** ko efficiently handle karta hai. React Fiber ke introduction se, React applications ab **faster** aur **more responsive** ban gaye hain.
+
+Fiber ka basic goal tha React ko zyada **scalable** aur **efficient** banana, taaki modern web apps mein **complex UI updates** easily handle kiya ja sake.
+
+Agar aapko React Fiber ke baare mein koi aur detail chahiye ho ya koi confusion ho, toh zarur bataiyega!
